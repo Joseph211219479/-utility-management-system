@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('meters', function (Blueprint $table) {
-            $table->id();
-            $table->string('source_name');
-            $table->string('status');
-            $table->string('measurement_type');
-
+        Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('meters');
+        Schema::dropIfExists('oauth_personal_access_clients');
     }
 };

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->float('total_reading')->default(0);
             $table->timestamps();
 
-            $table->foreign('meter_id')->references('id')->on('meter_readings')->onDelete('cascade');
+            $table->foreign('meter_id')->references('id')->on('meters')->onDelete('cascade');
 
         });
     }
