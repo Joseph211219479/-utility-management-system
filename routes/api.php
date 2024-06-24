@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MeterController;
+use App\Http\Controllers\Api\MeterReadingController;
+
 
 
 Route::post('login', [AuthController::class, 'login']);
@@ -20,3 +24,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     Route::get('user', [AuthController::class, 'user']);
     Route::resource('meters', MeterController::class);
 });*/
+
+
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('meter-readings', MeterReadingController::class)
+        ->only(['index', 'show'])
+        ->middleware('role:user,reader');
+
+    Route::post('meter-readings', [MeterReadingController::class, 'store'])
+        ->middleware('role:reader');
+
+    Route::middleware('role:admin')->group(function () {
+        Route::apiResource('meters', MeterController::class)->only(['store']);
+    });
+});

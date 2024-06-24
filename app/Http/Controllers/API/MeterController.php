@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 class MeterController extends Controller
 {
 
-    protected $meter;
+    protected $meterRepository;
 
-    public function __construct(Meter $meter)
+    public function __construct(MeterRepository $meterRepository)
     {
-        $this->meter = $meter;
+        $this->meterRepository = $meterRepository;
     }
 
 
@@ -23,15 +23,9 @@ class MeterController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $meters = $this->meterRepository->getAll();
+        return response()->json($meters);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -56,7 +50,8 @@ class MeterController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $meter = Meter::findOrFail($id);
+        return response()->json($meter);
     }
 
     /**
@@ -71,7 +66,18 @@ class MeterController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $meter = $this->meterRepository->findById($id);
+            if (!$meter) {
+                return response()->json(['message' => 'Meter not found'], 404);
+            }
+
+            // Assuming you have a blade view for editing meters
+            return view('meters.edit', compact('meter'));
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['message' => 'Failed to retrieve meter for editing', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -79,7 +85,17 @@ class MeterController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'source_name' => 'required|string|max:255',
+            'measurement_type' => 'required|string',
+        ]);
+
+        try {
+            $meter = $this->meterRepository->update($id, $validatedData);
+            return response()->json(['message' => 'Meter updated successfully', 'meter' => $meter], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to update meter', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -87,6 +103,11 @@ class MeterController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->meterRepository->delete($id);
+            return response()->json(['message' => 'Meter deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete meter', 'error' => $e->getMessage()], 500);
+        }
     }
 }
