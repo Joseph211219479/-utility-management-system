@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\MeterRepository;
 
-class RepositoryServiceProvider extends ServiceProvider
+class MeterRepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

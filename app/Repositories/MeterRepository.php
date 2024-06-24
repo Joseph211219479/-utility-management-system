@@ -28,7 +28,7 @@ class MeterRepository
         return $meter;
     }
 
-    public function delete($id)
+    public function delete($id): void
     {
         $meter = $this->findById($id);
         $meter->delete();

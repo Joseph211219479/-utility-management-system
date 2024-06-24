@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Meter;
 use Illuminate\Http\Request;
+use App\Repositories\MeterRepository;
 
 
 class MeterController extends Controller
@@ -33,13 +34,17 @@ class MeterController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'source_name' => 'required|string|max:255',
-            'measurement_type' => 'required|string',
-        ]);
 
         try {
-            $this->meter->create($validatedData);
+            $validatedData = $request->validate([
+                'source_name' => 'required|string|max:255',
+                'measurement_type' => 'required|string',
+            ]);
+
+            $meter = $this->meterRepository->create($validatedData);
+
+            return response()->json($meter, 201);
+
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to create meter', 'error' => $e->getMessage()], 500);
         }

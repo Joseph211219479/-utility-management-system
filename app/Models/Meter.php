@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
+
 class Meter extends Model
 {
     use HasFactory;
@@ -58,6 +59,34 @@ class Meter extends Model
     private function validateMeasurementType(){
         //todo add code to make sure adding new measurments to meter its in the correct measurement
 
+    }
+
+    /**
+     * Add to the meter total.
+     *
+     * @param int $meterId
+     * @param float $value
+     * @return void
+     */
+    public function addTo($meterId, $value)
+    {
+      /*  $meterTotal = $this->meter()->findOrFail($meterId);
+        $meterTotal->total_value += $value;
+        $meterTotal->save();*/
+    }
+
+    /**
+     * Remove from the meter total.
+     *
+     * @param int $meterId
+     * @param float $value
+     * @return void
+     */
+    public function removeFrom($meterId, $value)
+    {
+       /* $meterTotal = $this->meter()->findOrFail($meterId);
+        $meterTotal->total_value -= $value;
+        $meterTotal->save();*/
     }
 
     /**
