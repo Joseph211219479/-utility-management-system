@@ -8,6 +8,15 @@ use App\Models\Meter;
 
 class MeterController extends Controller
 {
+
+    protected $meter;
+
+    public function __construct(Meter $meter)
+    {
+        $this->meter = $meter;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +43,8 @@ class MeterController extends Controller
             'measurement_type' => 'required|string',
         ]);
 
-        try{
-            Meter::create($validatedData);
-
+        try {
+            $this->meter->create($validatedData);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to create meter', 'error' => $e->getMessage()], 500);
         }

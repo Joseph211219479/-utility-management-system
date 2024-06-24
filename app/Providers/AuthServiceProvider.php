@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+         'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -37,7 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         if (! $this->app->routesAreCached()) {
-           // Passport::routes(); //todo this causes a compile error. routes dont exits in passport.
+          //  Passport::routes(); //depricated in v10 removed in v12
         }
 
         Passport::tokensExpireIn(now()->addDays(15));

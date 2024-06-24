@@ -21,7 +21,7 @@ class Meter extends Model
      * @param array $data
      * @return Meter
      */
-    public function createMeter(array $data): Meter
+    public function create(array $data): Meter
     {
         return static::create($data);
     }
