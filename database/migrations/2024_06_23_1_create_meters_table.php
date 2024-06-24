@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('source_name');
             $table->string('status');
             $table->string('measurement_type');
+            $table->float('total_reading')->default(0);
+
 
             $table->timestamps();
         });
