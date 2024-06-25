@@ -23,33 +23,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/*Route::middleware('auth:api')->group(function () {
-    Route::get('user', [AuthController::class, 'user']);
-    Route::resource('meters', MeterController::class);
-});*/
-
-
-/*
- * this one works but does not use the roles
- * Route::post('meters', [MeterController::class, 'store']);
- *
- *
-Route::post('meters', [MeterController::class, 'store']);
-Route::post('meters_reading', [MeterReadingController::class, 'store']);
-*/
 
 Route::middleware(['auth:api' ])->group(function () {
-  /*  Route::middleware('role:admin')->group(function () {
-        Route::post('meters', [MeterController::class, 'store']);
-    })->middleware([CheckRole::class]);*/
-
+    //meterController routes
    Route::post('meters', [MeterController::class, 'store'])
+        ->middleware(CheckRole::class . ":admin");
+    Route::get('meters', [MeterController::class, 'index'])
+        ->middleware(CheckRole::class . ":admin,reader");
+    Route::get('meters/{id}', [MeterController::class, 'show'])
+        ->middleware(CheckRole::class . ":admin,reader,client");
+    Route::put('meters/{id}', [MeterController::class, 'update'])
+        ->middleware(CheckRole::class . ":admin");
+    Route::delete('meters/{id}', [MeterController::class, 'destroy'])
+        ->middleware(CheckRole::class . ":admin");
+
+    //meterReadingController routes
+    Route::post('meter_reading', [MeterController::class, 'store'])
+        ->middleware(CheckRole::class . ":admin,reader");
+    Route::get('meter_reading', [MeterController::class, 'index'])
+        ->middleware(CheckRole::class . ":admin,reader");
+    Route::get('meter_reading/{id}', [MeterController::class, 'show'])
+        ->middleware(CheckRole::class . ":admin,reader,client");
+    Route::put('meter_reading/{id}', [MeterController::class, 'update'])
+        ->middleware(CheckRole::class . ":admin");
+    Route::delete('meter_reading/{id}', [MeterController::class, 'destroy'])
         ->middleware(CheckRole::class . ":admin");
 
 });
-
-/*Route::middleware(['auth:api'])->group(function () {
-    Route::middleware(CheckRole::class . ':admin')->group(function () {
-        Route::post('meters', [MeterController::class, 'store']);
-    });
-});*/

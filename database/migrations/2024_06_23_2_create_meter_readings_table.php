@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('meter_readings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('meter_id');
+            $table->unsignedBigInteger('reader_id');
             $table->float('reading');
             $table->timestamp('reading_date')->default(now());
             $table->timestamps();
 
             $table->foreign('meter_id')->references('id')->on('meters')->onDelete('cascade');
+            $table->foreign('reader_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }
