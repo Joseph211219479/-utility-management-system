@@ -6,15 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Repositories\MeterReadingRepository;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Repositories\MeterRepository;
+use Illuminate\Support\Facades\Log;
 
 
 class MeterReadingController extends Controller
 {
     protected $meterReadingRepository;
 
-    public function __construct(MeterReadingRepository $meterReadingRepository)
+    protected $meterRepository;
+
+    public function __construct(MeterReadingRepository $meterReadingRepository , MeterRepository $meterRepository)
     {
         $this->meterReadingRepository = $meterReadingRepository;
+        $this->meterRepository = $meterRepository;
     }
 
     public function index()
@@ -29,9 +34,19 @@ class MeterReadingController extends Controller
             $validatedData = $request->validate([
                 'meter_id' => 'required|exists:meters,id',
                 'reading' => 'required',
+                'reader_id' => 'required',
             ]);
+            \Log::info('here 1' );
 
             $reading = $this->meterReadingRepository->create($validatedData);
+
+            \Log::info('here 1' );
+
+            $meter =  $this->meterReadingRepository->findById($validatedData['meter_id']);
+            \Log::info('User roles: ' . $meter);
+
+            $meter->calculateTotal($validatedData['meter_id']);
+
             return response()->json($reading, 201);
 
         }catch (\Exception $e)

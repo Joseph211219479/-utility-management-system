@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Models\MeterReading;
+
 
 
 class Meter extends Model
@@ -45,10 +47,28 @@ class Meter extends Model
         $this->update(['total' => $this->calculateTotal()]);
     }
 
-    public function calculateTotal(){
-        //todo could set last reading as total ,
-        // vs
-        // update the totals by calculating the meter entries
+    public function calculateTotal($meterId){
+
+        $meterReadings = MeterReading::where('meter_id', $meterId)->get();
+
+        $totalReading = 0;
+
+        // Calculate the sum of all meter readings for the specified meter ID
+        foreach ($meterReadings as $reading) {
+            $totalReading += $reading->reading;
+        }
+
+        $meter = Meter::find($meterId);
+
+        if ($meter) {
+            // Update the total reading of the meter
+            $meter->total_reading = $totalReading;
+            $meter->save();
+
+            return response()->json(['message' => 'Total reading updated successfully!', 'total_reading' => $meter->total_reading]);
+        }
+
+        return response()->json(['message' => 'Meter not found.'], 404);
     }
 
     /**
