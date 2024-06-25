@@ -33,7 +33,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Route::post('meters', [MeterController::class, 'store']);
  *
  * */
-
+Route::post('meters', [MeterController::class, 'store']);
 Route::post('meters_reading', [MeterReadingController::class, 'store']);
 
 

@@ -33,8 +33,8 @@ class MeterReadingController extends Controller
 
             $reading = $this->meterReadingRepository->create($validatedData);
 
-            $role = $this->determineUserRole($validatedData);
-            $reading->assignRole($role);
+            //$role = $this->determineUserRole($validatedData);
+           // $reading->assignRole($role);
 
             return response()->json($reading, 201);
         }catch (\Exception $e)

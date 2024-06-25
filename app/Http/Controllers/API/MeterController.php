@@ -47,8 +47,8 @@ class MeterController extends Controller
 
             $meter = $this->meterRepository->create($validatedData);
 
-            $role = $this->determineUserRole($validatedData);
-            $meter->assignRole($role);
+            //$role = $this->determineUserRole($validatedData);
+           // $meter->assignRole($role);
 
             return response()->json($meter, 201);
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('meter_id');
             $table->float('reading');
-            $table->timestamp('reading_time');
+            $table->timestamp('reading_date')->default(now());
             $table->timestamps();
 
             $table->foreign('meter_id')->references('id')->on('meters')->onDelete('cascade');

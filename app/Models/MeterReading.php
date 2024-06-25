@@ -9,7 +9,7 @@ class MeterReading extends Model
 {
     use HasFactory;
 
-    protected $table = 'meter_reading';
+    protected $table = 'meter_readings';
 
     protected $fillable = [
         'meter_id',
