@@ -38,12 +38,18 @@ Route::post('meters', [MeterController::class, 'store']);
 Route::post('meters_reading', [MeterReadingController::class, 'store']);
 */
 
-Route::middleware(['auth:api' , 'role:admin'])->group(function () {
+Route::middleware(['auth:api' ])->group(function () {
   /*  Route::middleware('role:admin')->group(function () {
         Route::post('meters', [MeterController::class, 'store']);
     })->middleware([CheckRole::class]);*/
 
    Route::post('meters', [MeterController::class, 'store'])
-        ->middleware(CheckRole::class);
+        ->middleware(CheckRole::class . ":admin");
 
 });
+
+/*Route::middleware(['auth:api'])->group(function () {
+    Route::middleware(CheckRole::class . ':admin')->group(function () {
+        Route::post('meters', [MeterController::class, 'store']);
+    });
+});*/

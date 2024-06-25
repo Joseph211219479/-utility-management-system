@@ -39,7 +39,7 @@ class MeterController extends Controller
 
         try {
 
-            $this->authorize('create meter');
+           // $this->authorize('create meter');
 
 
             $validatedData = $request->validate([
