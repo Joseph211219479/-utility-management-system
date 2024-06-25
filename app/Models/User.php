@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -24,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
     /**
@@ -51,10 +49,16 @@ class User extends Authenticatable
     }
 
 
-    public function getRoleAttribute()
+    /**
+     * Get the role name for the user.
+     *
+     * @return string|null
+     */
+    public function getRoleAttribute(): ?string
     {
-        // Assuming you have a roles table and a relationship set up
-        return $this->roles()->first()->name;
+        $role = $this->roles->first();
+
+        return $role ? $role->name : null;
     }
 
 }

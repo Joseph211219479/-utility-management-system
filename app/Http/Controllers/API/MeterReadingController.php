@@ -32,11 +32,8 @@ class MeterReadingController extends Controller
             ]);
 
             $reading = $this->meterReadingRepository->create($validatedData);
-
-            //$role = $this->determineUserRole($validatedData);
-           // $reading->assignRole($role);
-
             return response()->json($reading, 201);
+
         }catch (\Exception $e)
         {
             return response()->json(['message' => 'Failed to create meter', 'error' => $e->getMessage()], 500);
@@ -67,15 +64,4 @@ class MeterReadingController extends Controller
         return response()->json(null, 204);
     }
 
-    protected function determineUserRole($userData)
-    {
-        if ($userData['role'] === 'admin') {
-            return Role::where('name', 'admin')->first();
-        } elseif($userData['role'] === 'reader') {
-            return Role::where('name', 'reader')->first();
-        }else{
-            return Role::where('name', 'client')->first();
-
-        }
-    }
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\MeterRepository;
 use Spatie\Permission\Models\Role;
-
+use App\Models\Meter;
 
 
 class MeterController extends Controller
@@ -38,6 +38,10 @@ class MeterController extends Controller
        // return response()->json(['message' => 'Failed to create meter', 'error' => "dfdf"], 500);
 
         try {
+
+            $this->authorize('create meter');
+
+
             $validatedData = $request->validate([
                 'source_name' => 'required|string|max:255',
                 'measurement_type' => 'required|string',
@@ -46,9 +50,6 @@ class MeterController extends Controller
             ]);
 
             $meter = $this->meterRepository->create($validatedData);
-
-            //$role = $this->determineUserRole($validatedData);
-           // $meter->assignRole($role);
 
             return response()->json($meter, 201);
 
@@ -123,13 +124,5 @@ class MeterController extends Controller
         }
     }
 
-    protected function determineUserRole($userData)
-    {
 
-        if ($userData['role'] === 'admin') {
-            return Role::where('name', 'admin')->first();
-        } else {
-            return Role::where('name', 'reader')->first();
-        }
-    }
 }

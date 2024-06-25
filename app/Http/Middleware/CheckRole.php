@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-
-
 class CheckRole
 {
     /**
@@ -24,7 +22,7 @@ class CheckRole
         }
 
         $user = Auth::user();
-        Log::info('User role: ' . $user->role);
+        //Log::info('User role: ' . $user->role);
 
 
         if (!$user->hasAnyRole($roles)) {

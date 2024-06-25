@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -20,8 +21,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'role' => 'required',
+            'password' => 'required|string|min:8'
         ]);
 
         if ($validator->fails()) {
@@ -35,10 +35,13 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
+       // $user = $this->userRepository::create($validator);
+        $role = $this->determineUserRole($request->role);
+        $user->assignRole($role);
 
         $token = $user->createToken('Personal Access Token')->accessToken;
 
-        return response()->json(['token' => $token], 201);
+        return response()->json(['token' => $token , 'role' => $user->getAllPermissions()], 201);
     }
 
     /**
@@ -53,7 +56,7 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('Personal Access Token')->accessToken;
 
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token, 'role' => $user->getAllPermissions()], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -62,5 +65,10 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    protected function determineUserRole($role)
+    {
+        return Role::where('name', $role)->first();
     }
 }

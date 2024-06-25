@@ -4,17 +4,30 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User; //todo change to repo
+use App\Models\User;
+use App\Repositories\UserRepository;
+
+use Spatie\Permission\Models\Role;
+
+//todo change to repo
 
 
 class UserController extends Controller
 {
+
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::all();
+        $users =  $this->userRepository::all();
         return view('users.index', ['users' => $users]);
     }
 
@@ -35,10 +48,13 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'role' => 'required',
-            'password'=> 'required'
+            'passworrd'=> 'required'
         ]);
 
-        User::create($validatedData);
+        $user = $this->userRepository::create($validatedData);
+        $role = $this->determineUserRole($validatedData);
+        $user->assignRole($role);
+
         return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
 
@@ -47,7 +63,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
+        $user =  $this->userRepository::findOrFail($id);
         return view('users.show', ['user' => $user]);
     }
 
@@ -56,7 +72,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        $user =  $this->userRepository::findOrFail($id);
         return view('users.edit', ['user' => $user]);
     }
 
@@ -85,4 +101,17 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
+
+    protected function determineUserRole($userData)
+    {
+        if ($userData['role'] === 'admin') {
+            return Role::where('name', 'admin')->first();
+        } elseif($userData['role'] === 'reader') {
+            return Role::where('name', 'reader')->first();
+        }else{
+            return Role::where('name', 'client')->first();
+
+        }
+    }
+
 }
