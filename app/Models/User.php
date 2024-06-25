@@ -53,8 +53,9 @@ class User extends Authenticatable
      * @param ...$roles
      * @return mixed
      */
-    public function assignRole(...$roles)
+/*    public function assignRole(...$roles)
     {
         return $this->assignRole($roles);
-    }
+    }*/
+
 }

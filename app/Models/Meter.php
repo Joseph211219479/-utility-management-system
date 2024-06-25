@@ -16,16 +16,7 @@ class Meter extends Model
 
     protected $fillable = ['source_name', 'status', 'measurement_type'];
 
-    /**
-     * Create a new meter record.
-     *
-     * @param array $data
-     * @return Meter
-     */
-    public function create(array $data): Meter
-    {
-        return static::create($data);
-    }
+
 
     /**
      * @param string $status

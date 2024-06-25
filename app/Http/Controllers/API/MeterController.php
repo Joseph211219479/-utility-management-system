@@ -34,11 +34,14 @@ class MeterController extends Controller
      */
     public function store(Request $request)
     {
+       // return response()->json(['message' => 'Failed to create meter', 'error' => "dfdf"], 500);
 
         try {
             $validatedData = $request->validate([
                 'source_name' => 'required|string|max:255',
                 'measurement_type' => 'required|string',
+                'status' => 'required',
+                'total_reading' => '',
             ]);
 
             $meter = $this->meterRepository->create($validatedData);

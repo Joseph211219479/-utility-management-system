@@ -7,7 +7,9 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MeterController;
 use App\Http\Controllers\Api\MeterReadingController;
 
-
+Route::get('/test', function () { //todo remove later
+    return response()->json(['message' => 'API route test successful!']);
+});
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
@@ -26,15 +28,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 
-Route::middleware('auth:api')->group(function () {
- /*   Route::apiResource('meter-readings', MeterReadingController::class)
-        ->only(['index', 'show'])
-        ->middleware('role:user,reader');
+Route::post('meters', [MeterController::class, 'store']);
 
-    Route::post('meter-readings', [MeterReadingController::class, 'store'])
-        ->middleware('role:reader');*/
 
-    Route::middleware('role:admin')->group(function () {
-        Route::post('meters', [MeterController::class, 'store']);
-    });
-});

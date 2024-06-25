@@ -13,8 +13,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'admin']); //has full crud in admin dashboard
-        Role::create(['name' => 'reader']); // update readings/date from source
-        Role::create(['name' => 'client']); // the source/customer/frontendUser
+        Role::create(['name' => 'admin' , 'guard_name' => 'api']); //has full crud in admin dashboard
+        Role::create(['name' => 'reader', 'guard_name' => 'api']); // update readings/date from source
+        Role::create(['name' => 'client', 'guard_name' => 'api']); // the source/customer/frontendUser
     }
 }
