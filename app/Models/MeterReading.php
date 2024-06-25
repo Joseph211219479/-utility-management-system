@@ -15,6 +15,7 @@ class MeterReading extends Model
         'meter_id',
         'reading',
         'reading_date',
+        'reader_id',
     ];
 
     // Define relationships, if any

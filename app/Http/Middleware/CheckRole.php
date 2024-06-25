@@ -26,10 +26,10 @@ class CheckRole
 
 
         // Log user roles
-        \Log::info('User roles: ' . $user->roles->pluck('name')->implode(', '));
+       // \Log::info('User roles: ' . $user->roles->pluck('name')->implode(', '));
 
         // Log roles to be checked
-        \Log::info('Roles to check: ' . implode(', ', $roles));
+       // \Log::info('Roles to check: ' . implode(', ', $roles));
 
 
         if (!$user->hasAnyRole($roles)) {

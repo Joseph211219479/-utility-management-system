@@ -38,15 +38,15 @@ Route::middleware(['auth:api' ])->group(function () {
         ->middleware(CheckRole::class . ":admin");
 
     //meterReadingController routes
-    Route::post('meter_reading', [MeterController::class, 'store'])
+    Route::post('meter_reading', [MeterReadingController::class, 'store'])
         ->middleware(CheckRole::class . ":admin,reader");
-    Route::get('meter_reading', [MeterController::class, 'index'])
+    Route::get('meter_reading', [MeterReadingController::class, 'index'])
         ->middleware(CheckRole::class . ":admin,reader");
-    Route::get('meter_reading/{id}', [MeterController::class, 'show'])
+    Route::get('meter_reading/{id}', [MeterReadingController::class, 'show'])
         ->middleware(CheckRole::class . ":admin,reader,client");
-    Route::put('meter_reading/{id}', [MeterController::class, 'update'])
+    Route::put('meter_reading/{id}', [MeterReadingController::class, 'update'])
         ->middleware(CheckRole::class . ":admin");
-    Route::delete('meter_reading/{id}', [MeterController::class, 'destroy'])
+    Route::delete('meter_reading/{id}', [MeterReadingController::class, 'destroy'])
         ->middleware(CheckRole::class . ":admin");
 
 });

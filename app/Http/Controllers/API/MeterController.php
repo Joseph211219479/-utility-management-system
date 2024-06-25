@@ -8,7 +8,6 @@ use App\Repositories\MeterRepository;
 use Spatie\Permission\Models\Role;
 use App\Models\Meter;
 
-
 class MeterController extends Controller
 {
 
@@ -18,7 +17,6 @@ class MeterController extends Controller
     {
         $this->meterRepository = $meterRepository;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -35,9 +33,7 @@ class MeterController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
-
             $validatedData = $request->validate([
                 'source_name' => 'required|string|max:255',
                 'measurement_type' => 'required|string',
@@ -119,6 +115,5 @@ class MeterController extends Controller
             return response()->json(['message' => 'Failed to delete meter', 'error' => $e->getMessage()], 500);
         }
     }
-
 
 }

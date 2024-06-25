@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Repositories\MeterRepository;
 use Illuminate\Support\Facades\Log;
-
+use App\Models\Meter;
 
 class MeterReadingController extends Controller
 {
@@ -34,18 +34,16 @@ class MeterReadingController extends Controller
             $validatedData = $request->validate([
                 'meter_id' => 'required|exists:meters,id',
                 'reading' => 'required',
-                'reader_id' => 'required',
+                'reader_id' => 'required|exists:users,id',
             ]);
-            \Log::info('here 1' );
 
             $reading = $this->meterReadingRepository->create($validatedData);
 
-            \Log::info('here 1' );
+            //\Log::info('here 1' );
 
-            $meter =  $this->meterReadingRepository->findById($validatedData['meter_id']);
-            \Log::info('User roles: ' . $meter);
+            //$meter =  $this->meterReadingRepository->findById($validatedData['meter_id']);
 
-            $meter->calculateTotal($validatedData['meter_id']);
+            Meter::calculateTotal($validatedData['meter_id']);
 
             return response()->json($reading, 201);
 

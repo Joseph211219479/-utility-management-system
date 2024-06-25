@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\MeterReading;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -17,7 +18,6 @@ class Meter extends Model
     protected $table = 'meters';
 
     protected $fillable = ['source_name', 'status', 'measurement_type'];
-
 
 
     /**
@@ -32,28 +32,23 @@ class Meter extends Model
     public function addInitialMeterReading($meterReading){
         // enter a new reading instance
         // set totals value to init meter reading
-
     }
 
     public function removeMeterReading($meterId){
-        //todo : delete the related meter reading entries
-        // todo delete the entry from the totals table
-
-        // Delete related meter reading entries
         $this->meterReadings()->where('id', $meterId)->delete();
 
-        // Update the entry from the totals table
-        // Assuming you have a totals table associated with each meter
         $this->update(['total' => $this->calculateTotal()]);
     }
 
-    public function calculateTotal($meterId){
+    /**
+     * @param $meterId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function calculateTotal($meterId){
 
         $meterReadings = MeterReading::where('meter_id', $meterId)->get();
-
         $totalReading = 0;
 
-        // Calculate the sum of all meter readings for the specified meter ID
         foreach ($meterReadings as $reading) {
             $totalReading += $reading->reading;
         }
@@ -61,7 +56,6 @@ class Meter extends Model
         $meter = Meter::find($meterId);
 
         if ($meter) {
-            // Update the total reading of the meter
             $meter->total_reading = $totalReading;
             $meter->save();
 
