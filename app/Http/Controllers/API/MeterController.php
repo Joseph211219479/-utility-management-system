@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Meter;
 use Illuminate\Http\Request;
 use App\Repositories\MeterRepository;
+use Spatie\Permission\Models\Role;
+
 
 
 class MeterController extends Controller
@@ -45,6 +46,9 @@ class MeterController extends Controller
             ]);
 
             $meter = $this->meterRepository->create($validatedData);
+
+            $role = $this->determineUserRole($validatedData);
+            $meter->assignRole($role);
 
             return response()->json($meter, 201);
 
@@ -116,6 +120,16 @@ class MeterController extends Controller
             return response()->json(['message' => 'Meter deleted successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to delete meter', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    protected function determineUserRole($userData)
+    {
+
+        if ($userData['role'] === 'admin') {
+            return Role::where('name', 'admin')->first();
+        } else {
+            return Role::where('name', 'reader')->first();
         }
     }
 }

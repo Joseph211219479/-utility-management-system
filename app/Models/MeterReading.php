@@ -11,7 +11,6 @@ class MeterReading extends Model
 
     protected $table = 'meter_reading';
 
-
     protected $fillable = [
         'meter_id',
         'reading',

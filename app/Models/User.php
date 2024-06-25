@@ -14,6 +14,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens , HasRoles;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,13 +50,11 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @param ...$roles
-     * @return mixed
-     */
-/*    public function assignRole(...$roles)
+
+    public function getRoleAttribute()
     {
-        return $this->assignRole($roles);
-    }*/
+        // Assuming you have a roles table and a relationship set up
+        return $this->roles()->first()->name;
+    }
 
 }

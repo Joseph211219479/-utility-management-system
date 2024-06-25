@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MeterController;
-use App\Http\Controllers\Api\MeterReadingController;
+use App\Http\Controllers\API\MeterReadingController;
 
 Route::get('/test', function () { //todo remove later
     return response()->json(['message' => 'API route test successful!']);
@@ -28,6 +28,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 
-Route::post('meters', [MeterController::class, 'store']);
+/*
+ * this one works but does not use the roles
+ * Route::post('meters', [MeterController::class, 'store']);
+ *
+ * */
+
+Route::post('meters_reading', [MeterReadingController::class, 'store']);
 
 
+/*Route::middleware('auth:api')->group(function () {
+    Route::middleware('role:admin')->group(function () {
+        Route::post('meters', [MeterController::class, 'store']);
+    });
+});*/

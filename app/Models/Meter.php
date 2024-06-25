@@ -27,8 +27,6 @@ class Meter extends Model
         return DB::table($this->table)->where('status', $status)->get();
     }
 
-
-
     public function addInitialMeterReading($meterReading){
         // enter a new reading instance
         // set totals value to init meter reading
@@ -47,37 +45,10 @@ class Meter extends Model
         $this->update(['total' => $this->calculateTotal()]);
     }
 
-    private function validateMeasurementType(){
-        //todo add code to make sure adding new measurments to meter its in the correct measurement
-
-    }
-
-    /**
-     * Add to the meter total.
-     *
-     * @param int $meterId
-     * @param float $value
-     * @return void
-     */
-    public function addTo($meterId, $value)
-    {
-      /*  $meterTotal = $this->meter()->findOrFail($meterId);
-        $meterTotal->total_value += $value;
-        $meterTotal->save();*/
-    }
-
-    /**
-     * Remove from the meter total.
-     *
-     * @param int $meterId
-     * @param float $value
-     * @return void
-     */
-    public function removeFrom($meterId, $value)
-    {
-       /* $meterTotal = $this->meter()->findOrFail($meterId);
-        $meterTotal->total_value -= $value;
-        $meterTotal->save();*/
+    public function calculateTotal(){
+        //todo could set last reading as total ,
+        // vs
+        // update the totals by calculating the meter entries
     }
 
     /**
