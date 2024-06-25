@@ -11,7 +11,7 @@ use App\Models\Meter;
 class MeterController extends Controller
 {
 
-    protected $meterRepository;
+    protected MeterRepository $meterRepository;
 
     public function __construct(MeterRepository $meterRepository)
     {
@@ -77,7 +77,6 @@ class MeterController extends Controller
                 return response()->json(['message' => 'Meter not found'], 404);
             }
 
-            // Assuming you have a blade view for editing meters
             return view('meters.edit', compact('meter'));
         } catch (\Exception $e) {
             // Handle exceptions

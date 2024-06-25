@@ -6,11 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Repositories\UserRepository;
-
 use Spatie\Permission\Models\Role;
-
-//todo change to repo
-
 
 class UserController extends Controller
 {
@@ -48,7 +44,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'role' => 'required',
-            'passworrd'=> 'required'
+            'password'=> 'required'
         ]);
 
         $user = $this->userRepository::create($validatedData);
@@ -84,7 +80,6 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            // Add more validation rules as needed
         ]);
 
         $user = User::findOrFail($id);

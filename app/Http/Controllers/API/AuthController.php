@@ -36,7 +36,6 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-       // $user = $this->userRepository::create($validator);
         $role = $this->determineUserRole($request->role);
         $user->assignRole($role);
 

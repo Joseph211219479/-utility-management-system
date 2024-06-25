@@ -12,9 +12,12 @@ use App\Models\Meter;
 
 class MeterReadingController extends Controller
 {
-    protected $meterReadingRepository;
+    /**
+     * @var MeterReadingRepository
+     */
+    protected MeterReadingRepository $meterReadingRepository;
 
-    protected $meterRepository;
+    protected MeterRepository $meterRepository;
 
     public function __construct(MeterReadingRepository $meterReadingRepository , MeterRepository $meterRepository)
     {
@@ -38,10 +41,6 @@ class MeterReadingController extends Controller
             ]);
 
             $reading = $this->meterReadingRepository->create($validatedData);
-
-            //\Log::info('here 1' );
-
-            //$meter =  $this->meterReadingRepository->findById($validatedData['meter_id']);
 
             Meter::calculateTotal($validatedData['meter_id']);
 
