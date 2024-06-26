@@ -100,6 +100,8 @@ class MeterReadingController extends Controller
     public function destroy($id)
     {
         $this->meterReadingRepository->delete($id);
+        Meter::calculateTotal($id);
+
         return response()->json(null, 204);
     }
 
