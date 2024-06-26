@@ -43,7 +43,6 @@ class UserRepositoryServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
     }
 
     /**

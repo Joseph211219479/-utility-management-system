@@ -9,16 +9,23 @@ use Illuminate\Support\Facades\DB;
 use App\Models\MeterReading;
 use Illuminate\Support\Facades\Log;
 
-
-
 class Meter extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string
+     */
     protected $table = 'meters';
 
-    protected $fillable = ['source_name', 'status', 'measurement_type'];
-
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'source_name',
+        'status',
+        'measurement_type'
+    ];
 
     /**
      * @param string $status
@@ -29,11 +36,10 @@ class Meter extends Model
         return DB::table($this->table)->where('status', $status)->get();
     }
 
-    public function addInitialMeterReading($meterReading){
-        // enter a new reading instance
-        // set totals value to init meter reading
-    }
-
+    /**
+     * @param $meterId
+     * @return void
+     */
     public function removeMeterReading($meterId){
         $this->meterReadings()->where('id', $meterId)->delete();
 

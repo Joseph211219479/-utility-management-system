@@ -17,20 +17,34 @@ class MeterReadingController extends Controller
      */
     protected MeterReadingRepository $meterReadingRepository;
 
+    /**
+     * @var MeterRepository
+     */
     protected MeterRepository $meterRepository;
 
+    /**
+     * @param MeterReadingRepository $meterReadingRepository
+     * @param MeterRepository $meterRepository
+     */
     public function __construct(MeterReadingRepository $meterReadingRepository , MeterRepository $meterRepository)
     {
         $this->meterReadingRepository = $meterReadingRepository;
         $this->meterRepository = $meterRepository;
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $readings = $this->meterReadingRepository->getAll();
         return response()->json($readings);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         try{
@@ -53,12 +67,21 @@ class MeterReadingController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $reading = $this->meterReadingRepository->findById($id);
         return response()->json($reading);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -70,6 +93,10 @@ class MeterReadingController extends Controller
         return response()->json($reading);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         $this->meterReadingRepository->delete($id);

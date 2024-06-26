@@ -5,31 +5,38 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\MeterRepository;
-use Spatie\Permission\Models\Role;
+//use Spatie\Permission\Models\Role;
 use App\Models\Meter;
+use Illuminate\Support\Facades\Log;
 
 class MeterController extends Controller
 {
 
+    /**
+     * @var MeterRepository
+     */
     protected MeterRepository $meterRepository;
 
+    /**
+     * @param MeterRepository $meterRepository
+     */
     public function __construct(MeterRepository $meterRepository)
     {
         $this->meterRepository = $meterRepository;
     }
 
     /**
-     * Display a listing of the resource.
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $meters = $this->meterRepository->getAll();
         return response()->json($meters);
-
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -60,14 +67,16 @@ class MeterController extends Controller
     }
 
     /**
-     * returns a list of active meters.
-    */
+     * @param $status
+     * @return void
+     */
     public function getMetersByStatus($status){
         Meter::getMetersByStatus($status);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param string $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse
      */
     public function edit(string $id)
     {
@@ -79,31 +88,37 @@ class MeterController extends Controller
 
             return view('meters.edit', compact('meter'));
         } catch (\Exception $e) {
-            // Handle exceptions
             return response()->json(['message' => 'Failed to retrieve meter for editing', 'error' => $e->getMessage()], 500);
         }
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param Request $request
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
             'source_name' => 'required|string|max:255',
             'measurement_type' => 'required|string',
+            'status' => 'required',
+            'total_reading' => '',
         ]);
 
         try {
             $meter = $this->meterRepository->update($id, $validatedData);
             return response()->json(['message' => 'Meter updated successfully', 'meter' => $meter], 200);
+
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to update meter', 'error' => $e->getMessage()], 500);
         }
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(string $id)
     {

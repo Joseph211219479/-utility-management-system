@@ -9,8 +9,14 @@ class MeterReading extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string
+     */
     protected $table = 'meter_readings';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'meter_id',
         'reading',
@@ -18,7 +24,9 @@ class MeterReading extends Model
         'reader_id',
     ];
 
-    // Define relationships, if any
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function meter()
     {
         return $this->belongsTo(Meter::class);

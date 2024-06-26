@@ -62,11 +62,19 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function user(Request $request)
     {
         return response()->json($request->user());
     }
 
+    /**
+     * @param $role
+     * @return mixed
+     */
     protected function determineUserRole($role)
     {
         return Role::where('name', $role)->first();

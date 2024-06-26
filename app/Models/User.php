@@ -13,7 +13,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens , HasRoles;
 
-
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +47,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
 
     /**
      * Get the role name for the user.
